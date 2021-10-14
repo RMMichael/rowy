@@ -7,6 +7,7 @@ import jsonFormat from "json-format";
 import { useTheme } from "@mui/material";
 import { useFieldStyles } from "@src/components/SideDrawer/Form/utils";
 
+import React from "react";
 const isValidJson = (val: any) => {
   try {
     if (typeof val === "string") JSON.parse(val);
@@ -17,7 +18,7 @@ const isValidJson = (val: any) => {
   return true;
 };
 
-export default function Json({
+export default function List({
   control,
   column,
   disabled,

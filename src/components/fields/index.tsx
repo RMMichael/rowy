@@ -35,6 +35,7 @@ import Aggregate from "./Aggregate";
 import User from "./User";
 import Id from "./Id";
 import Status from "./Status";
+import List from "./List";
 
 // Export field configs in order for FieldsDropdown
 export const FIELDS: IFieldConfig[] = [
@@ -66,6 +67,8 @@ export const FIELDS: IFieldConfig[] = [
   SubTable,
   ConnectTable,
   ConnectService,
+  // LIST
+  List,
   // CODE
   Json,
   Code,

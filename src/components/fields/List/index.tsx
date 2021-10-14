@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { IFieldConfig, FieldType } from "@src/components/fields/types";
 import withBasicCell from "../_withTableCell/withBasicCell";
 
-import JsonIcon from "@src/assets/icons/Json";
+import ListIcon from "@src/assets/icons/List";
 import BasicCell from "./BasicCell";
 import withSideDrawerEditor from "@src/components/Table/editors/withSideDrawerEditor";
 
@@ -16,13 +16,13 @@ const Settings = lazy(
 );
 
 export const config: IFieldConfig = {
-  type: FieldType.json,
-  name: "JSON",
-  group: "Code",
+  type: FieldType.list,
+  name: "List",
+  group: "Array",
   dataType: "object",
   initialValue: undefined,
   initializable: true,
-  icon: <JsonIcon />,
+  icon: <ListIcon />,
   description: "Object edited with a visual JSON editor.",
   TableCell: withBasicCell(BasicCell),
   TableEditor: withSideDrawerEditor(BasicCell),

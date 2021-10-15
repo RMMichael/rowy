@@ -4,6 +4,7 @@ import { IBasicCellProps } from "../types";
 import { useTheme } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import ListView from "./List";
 
 import React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
@@ -67,24 +68,26 @@ export default function List({ value }: IBasicCellProps) {
         wordBreak: "break-word",
       }}
     >
+      <div>{value}</div>
+      {/*<ListView></ListView>*/}
       {/*<div className={classes.div}>*/}
-      <Select
-        className={classes.sel}
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={age}
-        label="Age"
-        onChange={handleChange}
-      >
-        {arr.map((val) => {
-          return <MenuItem value={val}>{format(val)}</MenuItem>;
-        })}
-        {/*<MenuItem value={10}>Ten</MenuItem>*/}
-        {/*<MenuItem value={20}>Twenty</MenuItem>*/}
-        {/*<MenuItem value={30}>Thirty</MenuItem>*/}
-      </Select>
-      {/*</div>*/}
-      {/*{formattedJson}*/}
+      {/*<Select*/}
+      {/*  className={classes.sel}*/}
+      {/*  labelId="demo-simple-select-label"*/}
+      {/*  id="demo-simple-select"*/}
+      {/*  value={age}*/}
+      {/*  label="Age"*/}
+      {/*  onChange={handleChange}*/}
+      {/*>*/}
+      {/*  {arr.map((val) => {*/}
+      {/*    return <MenuItem value={val}>{format(val)}</MenuItem>;*/}
+      {/*  })}*/}
+      {/*  /!*<MenuItem value={10}>Ten</MenuItem>*!/*/}
+      {/*  /!*<MenuItem value={20}>Twenty</MenuItem>*!/*/}
+      {/*  /!*<MenuItem value={30}>Thirty</MenuItem>*!/*/}
+      {/*</Select>*/}
+      {/*/!*</div>*!/*/}
+      {/*/!*{formattedJson}*!/*/}
     </div>
   );
 }

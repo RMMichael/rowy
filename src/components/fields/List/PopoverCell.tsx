@@ -4,7 +4,7 @@ import MultiSelect_ from "@rowy/multiselect";
 
 // import { sanitiseValue } from "./utils";
 import List from "./List";
-
+let x = 0;
 export default function ListPopoverCell({
   value,
   onSubmit,
@@ -16,7 +16,14 @@ export default function ListPopoverCell({
   const config = column.config ?? {};
 
   return (
-    <List></List>
+    <List
+      value={value}
+      onSubmit={onSubmit}
+      column={column}
+      // parentRef={parentRef}  // IPopoverCellProps on List ?
+      showPopoverCell={showPopoverCell}
+      disabled={disabled}
+    />
     // <MultiSelect_
     //   value={sanitiseValue(value)}
     //   onChange={onSubmit}

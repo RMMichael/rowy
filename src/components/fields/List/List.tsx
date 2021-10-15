@@ -7,10 +7,21 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import { IPopoverCellProps } from "@src/components/fields/types";
 
 const filter = createFilterOptions();
 
-export default function List() {
+export default function List(props: any) {
+  const {
+    value: list,
+    onSubmit,
+    column,
+    parentRef,
+    showPopoverCell,
+    disabled,
+  } = props;
+  let x = 0;
+  console.log(list);
   const [value, setValue] = React.useState({});
   const [open, toggleOpen] = React.useState(false);
 
@@ -76,7 +87,7 @@ export default function List() {
           return filtered;
         }}
         id="free-solo-dialog-demo"
-        options={top100Films}
+        options={list}
         getOptionLabel={(option) => {
           // e.g value selected with enter, right from the input
           if (typeof option === "string") {
@@ -85,12 +96,12 @@ export default function List() {
           if (option.inputValue) {
             return option.inputValue;
           }
-          return option.title;
+          return option.name || "unknown";
         }}
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
-        renderOption={(props, option) => <li {...props}>{option.title}</li>}
+        renderOption={(props, option) => <li {...props}>{option.name}</li>}
         sx={{ width: 300 }}
         freeSolo
         renderInput={(params) => (

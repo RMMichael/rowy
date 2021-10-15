@@ -11,9 +11,9 @@ export const List = forwardRef(function List(
   ref: React.Ref<any>
 ) {
   let h = 0;
-  console.log("HERERE");
-  console.log(typeof value);
-  console.log(value);
+  // console.log("HERERE");
+  // console.log(typeof value);
+  // console.log(value);
   // let h = JSON.parse(value);
 
   const sanitiseValue = (value: any) => {

@@ -23,6 +23,8 @@ export const SELECTABLE_TYPES = [
   FieldType.singleSelect,
   FieldType.multiSelect,
 
+  FieldType.list,
+
   FieldType.json,
   FieldType.code,
 
@@ -49,6 +51,7 @@ const inferTypeFromValue = (value: any) => {
   if (typeof value === "object") {
     if ("hex" in value && "rgb" in value) return FieldType.color;
     if ("toDate" in value) return FieldType.dateTime;
+    if ("List" in value) return FieldType.list;
     return FieldType.json;
   }
 

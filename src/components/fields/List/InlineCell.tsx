@@ -6,7 +6,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 // // import { sanitiseValue } from "./utils";
 
-export const List = forwardRef(function List(
+export const ListField = forwardRef(function ListField(
   { value, showPopoverCell, disabled }: IPopoverInlineCellProps,
   ref: React.Ref<any>
 ) {
@@ -61,4 +61,4 @@ export const List = forwardRef(function List(
   );
 });
 
-export default List;
+export default ListField;

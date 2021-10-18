@@ -4,7 +4,7 @@ import { IBasicCellProps } from "../types";
 import { useTheme } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import ListView from "./List";
+import ListView from "./ListField";
 
 import React from "react";
 import { createStyles, makeStyles } from "@mui/styles";

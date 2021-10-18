@@ -39,6 +39,7 @@ export interface IPopoverCellOptions extends Partial<PopoverProps> {
  * @param PopoverCellComponent The heavy read/write cell component to display in Popover
  * @param options See `IPopoverCellOptions`
  */
+
 export default function withPopoverCell(
   BasicCellComponent: React.ComponentType<IBasicCellProps>,
   InlineCellComponent: React.ForwardRefExoticComponent<

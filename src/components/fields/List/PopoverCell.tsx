@@ -1,10 +1,8 @@
 import { IPopoverCellProps } from "../types";
-
 import MultiSelect_ from "@rowy/multiselect";
 
 // import { sanitiseValue } from "./utils";
-import List from "./List";
-let x = 0;
+import ListField from "./ListField";
 export default function ListPopoverCell({
   value,
   onSubmit,
@@ -16,11 +14,11 @@ export default function ListPopoverCell({
   const config = column.config ?? {};
 
   return (
-    <List
+    <ListField
       value={value}
       onSubmit={onSubmit}
       column={column}
-      // parentRef={parentRef}  // IPopoverCellProps on List ?
+      parentRef={parentRef} // IPopoverCellProps on List ?
       showPopoverCell={showPopoverCell}
       disabled={disabled}
     />

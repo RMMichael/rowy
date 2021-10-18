@@ -4,7 +4,7 @@ import withBasicCell from "../_withTableCell/withBasicCell";
 import withPopoverCell from "../_withTableCell/withPopoverCell";
 
 import ListIcon from "@src/assets/icons/List";
-import BasicCell from "../_BasicCell/BasicCellNull";
+import NullBasicCell from "../_BasicCell/BasicCellNull";
 import withSideDrawerEditor2 from "./withSideDrawerEditor2";
 import TextEditor from "components/Table/editors/TextEditor";
 import NullEditor from "@src/components/Table/editors/NullEditor";
@@ -34,7 +34,7 @@ export const config: IFieldConfig = {
   initializable: true,
   icon: <ListIcon />,
   description: "Object edited with a visual JSON editor.",
-  TableCell: withPopoverCell(BasicCell, InlineCell, PopoverCell, {
+  TableCell: withPopoverCell(NullBasicCell, InlineCell, PopoverCell, {
     anchorOrigin: { horizontal: "left", vertical: "bottom" },
     transparent: true,
   }),

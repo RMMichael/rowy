@@ -9,7 +9,6 @@ import withSideDrawerEditor2 from "./withSideDrawerEditor2";
 import TextEditor from "components/Table/editors/TextEditor";
 import NullEditor from "@src/components/Table/editors/NullEditor";
 // import withPopoverCell from "@src/components/fields/_withTableCell/withPopoverCell";
-// import InlineCell from "@src/components/fields/SingleSelect/InlineCell";
 import InlineCell from "./InlineCell";
 
 const PopoverCell = lazy(
@@ -47,6 +46,7 @@ export const config: IFieldConfig = {
     }
   },
   SideDrawerField,
+  requireConfiguration: true,
   settings: Settings,
 };
 export default config;

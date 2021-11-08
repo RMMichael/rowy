@@ -1,5 +1,6 @@
 import { IPopoverCellProps } from "../types";
 import MultiSelect_ from "@rowy/multiselect";
+import { useState } from "react";
 
 // import { sanitiseValue } from "./utils";
 import ListField from "./ListField";
@@ -10,11 +11,15 @@ export default function ListPopoverCell({
   parentRef,
   showPopoverCell,
   disabled,
+  row,
+  setSelected,
 }: IPopoverCellProps) {
   const config = column.config ?? {};
-
+  (window as any).col = column;
   return (
     <ListField
+      setSelected={setSelected}
+      row={row}
       value={value}
       onSubmit={onSubmit}
       column={column}
@@ -22,27 +27,5 @@ export default function ListPopoverCell({
       showPopoverCell={showPopoverCell}
       disabled={disabled}
     />
-    // <MultiSelect_
-    //   value={sanitiseValue(value)}
-    //   onChange={onSubmit}
-    //   options={config.options ?? []}
-    //   multiple={false}
-    //   freeText={config.freeText}
-    //   disabled={disabled}
-    //   label={column.name as string}
-    //   labelPlural={column.name as string}
-    //   TextFieldProps={{
-    //     style: { display: "none" },
-    //     SelectProps: {
-    //       open: true,
-    //       MenuProps: {
-    //         anchorEl: parentRef,
-    //         anchorOrigin: { vertical: "bottom", horizontal: "left" },
-    //         transformOrigin: { vertical: "top", horizontal: "left" },
-    //       },
-    //     },
-    //   }}
-    //   onClose={() => showPopoverCell(false)}
-    // />
   );
 }

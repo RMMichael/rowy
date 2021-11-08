@@ -231,6 +231,8 @@ defined in the fields/List folder, but I will also post pictures here soon.
 - The project is reliant upon pre-defined interfaces, which I agree with, but
   they went overboard
 - There are just about no comments on the code
+- It's entirely run on frontend react, which can make for security
+  vulnerabilities
 
 ![img.png](./pics/list.png)
 

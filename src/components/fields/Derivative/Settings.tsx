@@ -46,6 +46,7 @@ const Settings = ({ config, handleChange }) => {
             options={Object.values(FieldType).filter(
               (f) =>
                 ![
+                  FieldType.list,
                   FieldType.derivative,
                   FieldType.aggregate,
                   FieldType.subTable,

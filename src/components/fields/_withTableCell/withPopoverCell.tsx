@@ -55,6 +55,8 @@ export default function withPopoverCell(
 
     const { validationRegex, required } = (props.column as any).config;
 
+    const [selected, setSelected] = useState("");
+
     // Initially display BasicCell to improve scroll performance
     const [displayedComponent, setDisplayedComponent] = useState<
       "basic" | "inline" | "popover"
@@ -85,7 +87,9 @@ export default function withPopoverCell(
       name: props.column.name as string,
       type: (props.column as any).type as FieldType,
     };
-
+    console.log(
+      `column: ${props.column.name}, cell display:${displayedComponent}`
+    );
     if (displayedComponent === "basic")
       return (
         <ErrorBoundary fullScreen={false} basic wrap="nowrap">
@@ -127,7 +131,11 @@ export default function withPopoverCell(
       ref: inlineCellRef,
     };
     const inlineCell = (
-      <InlineCellComponent {...commonCellProps} ref={inlineCellRef} />
+      <InlineCellComponent
+        selected={selected}
+        {...commonCellProps}
+        ref={inlineCellRef}
+      />
     );
 
     if (displayedComponent === "inline")
@@ -172,6 +180,7 @@ export default function withPopoverCell(
               onKeyDown={(e) => e.stopPropagation()}
             >
               <PopoverCellComponent
+                setSelected={setSelected}
                 {...commonCellProps}
                 parentRef={parentRef}
               />

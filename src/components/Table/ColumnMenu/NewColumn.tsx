@@ -9,6 +9,9 @@ import { FieldType } from "constants/fields";
 import FieldsDropdown from "./FieldsDropdown";
 import { getFieldProp } from "components/fields";
 import { analytics } from "analytics";
+import { useProjectContext } from "contexts/ProjectContext";
+
+import { db, auth } from "firebase/index";
 
 export interface INewColumnProps extends IMenuModalProps {
   data: Record<string, any>;
@@ -26,6 +29,21 @@ export default function NewColumn({
   const [fieldKey, setFieldKey] = useState("");
   const [type, setType] = useState(FieldType.shortText);
   const requireConfiguration = getFieldProp("requireConfiguration", type);
+  const projectContext = useProjectContext();
+  const {
+    tableState,
+    tableActions,
+    updateCell,
+    settingsActions,
+    roles,
+    tables,
+    dataGridRef,
+    sideDrawerRef,
+    columnMenuRef,
+    importWizardRef,
+    rowyRun,
+  } = projectContext;
+  // console.log(tableState?.tablePath);
 
   useEffect(() => {
     if (type !== FieldType.id) setFieldKey(_camel(columnLabel));

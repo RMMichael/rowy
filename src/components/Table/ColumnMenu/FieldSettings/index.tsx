@@ -18,7 +18,6 @@ import { runRoutes } from "constants/runRoutes";
 export default function FieldSettings(props: IMenuModalProps) {
   const { name, fieldName, type, open, config, handleClose, handleSave } =
     props;
-
   const [showRebuildPrompt, setShowRebuildPrompt] = useState(false);
   const [newConfig, setNewConfig] = useState(config ?? {});
   const customFieldSettings = getFieldProp("settings", type);
@@ -39,7 +38,7 @@ export default function FieldSettings(props: IMenuModalProps) {
     const updatedConfig = _set({ ...newConfig }, key, update);
     setNewConfig(updatedConfig);
   };
-  const rendedFieldSettings = useMemo(
+  const renderedFieldSettings = useMemo(
     () =>
       [FieldType.derivative, FieldType.aggregate].includes(type) &&
       newConfig.renderFieldType
@@ -79,13 +78,14 @@ export default function FieldSettings(props: IMenuModalProps) {
                 sx={{ borderTop: 1, borderColor: "divider", pt: 3 }}
               >
                 {createElement(customFieldSettings, {
+                  fieldName: fieldName,
                   config: newConfig,
                   handleChange,
                 })}
               </Stack>
             )}
 
-            {rendedFieldSettings && (
+            {renderedFieldSettings && (
               <Stack
                 spacing={3}
                 sx={{ borderTop: 1, borderColor: "divider", pt: 3 }}
@@ -93,7 +93,7 @@ export default function FieldSettings(props: IMenuModalProps) {
                 <Typography variant="subtitle1">
                   Rendered field config
                 </Typography>
-                {createElement(rendedFieldSettings, {
+                {createElement(renderedFieldSettings, {
                   config: newConfig,
                   handleChange,
                 })}

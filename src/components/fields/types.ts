@@ -42,6 +42,7 @@ export interface IPopoverInlineCellProps extends IHeavyCellProps {
 }
 export interface IPopoverCellProps extends IPopoverInlineCellProps {
   parentRef: PopoverProps["anchorEl"];
+  setSelected: Function;
 }
 
 export interface ISideDrawerFieldProps {

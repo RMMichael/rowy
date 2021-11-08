@@ -6,21 +6,32 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 // // import { sanitiseValue } from "./utils";
 
-export const ListField = forwardRef(function ListField(
-  { value, showPopoverCell, disabled }: IPopoverInlineCellProps,
+export const InlineListField = forwardRef(function ListField(
+  {
+    value,
+    showPopoverCell,
+    disabled,
+    row,
+    selected,
+    column,
+  }: IPopoverInlineCellProps,
   ref: React.Ref<any>
 ) {
-  let h = 0;
-  // console.log("HERERE");
-  // console.log(typeof value);
-  // console.log(value);
-  // let h = JSON.parse(value);
+  // (window as any).rest = rest;
+
+  (window as any).ref = ref;
 
   const sanitiseValue = (value: any) => {
     if (value === undefined || value === null || value === "") return null;
     else if (Array.isArray(value)) return value[0] as string;
     else return value as string;
   };
+  (window as any).column = column;
+  let display = <></>;
+  if (selected != "") {
+    // console.log(column.config.displayField);
+    display = <div>{selected[column.config.displayField]}</div>;
+  } else display = <div>View List</div>;
 
   return (
     <ButtonBase
@@ -42,7 +53,7 @@ export const ListField = forwardRef(function ListField(
     >
       <div style={{ flexGrow: 1, overflow: "hidden" }}>
         {/*{sanitiseValue(value)}*/}
-        View List
+        {display}
       </div>
 
       {!disabled && (
@@ -61,4 +72,4 @@ export const ListField = forwardRef(function ListField(
   );
 });
 
-export default ListField;
+export default InlineListField;

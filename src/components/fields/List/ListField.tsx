@@ -10,10 +10,10 @@ import Autocomplete, {
   autocompleteClasses,
   createFilterOptions,
 } from "@mui/material/Autocomplete";
-import { IPopoverCellProps } from "@src/components/fields/types";
-import Popper from "@mui/material/Popper";
 import { forwardRef } from "react";
 import { useTheme, styled } from "@mui/material/styles";
+import makeStyles from "@mui/styles/makeStyles";
+import Box from "@mui/material/Box";
 
 const filter = createFilterOptions();
 
@@ -47,16 +47,29 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   },
 }));
 
+const Styles = makeStyles({
+  listItem: {
+    flexDirection: "column",
+  },
+  smallTxt: {
+    overflow: "hidden",
+    display: "inline-block",
+    fontSize: `.75em`,
+    color: `gray`,
+  },
+});
+
 function PopperComponent(props) {
   const { disablePortal, anchorEl, open, ...other } = props;
-  // const { disablePortal, anchorEl, ...other } = props;
   return <>{<StyledAutocompletePopper {...other} />}</>;
-  // <Popper {...props} anchorEl={anchorEl} placement="bottom-start" />
-  // return <Popper {...other}/>;
 }
-
-// TODO Find where isActionScript is being assigned and change false to true
 // TODO in file TypeChange.tsx track the process
+
+const sanitiseValue = (value: any) => {
+  if (value === undefined || value === null || value === "") return null;
+  else if (Array.isArray(value)) return value[0] as string;
+  else return value as string;
+};
 
 export const ListField = function ListField(props: any) {
   const {
@@ -69,32 +82,39 @@ export const ListField = function ListField(props: any) {
     row,
     setSelected,
   } = props;
-  // (window as any).rest = rest;
+  (window as any).row = row;
   const [value, setValue] = useState({});
   const [dialogOpen, toggleDialogOpen] = useState(false);
   const [acOpen, setAcOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null as any);
   let displayField = column.config.displayField;
-  (window as any).col = column;
-  let keys = new Set();
+  let key = displayField ? displayField : "value";
 
+  const css = Styles();
+  (window as any).col = column;
+  // let keys = new Set();
+  let keyCheck = {};
+  let keyObj = {};
+  let types = {};
+  let unique_key_arr = [];
   if (displayField) {
-    for (let v of Object.values(list)) {
-      for (let key of Object.keys(v)) keys.add(key);
+    for (let val of list) {
+      for (let [k, v] of Object.entries(val)) {
+        if (!keyCheck[k]) {
+          keyCheck[k] = true;
+          unique_key_arr.push(k);
+          types[k] = typeof v === "number" ? "number" : "string";
+        }
+      }
     }
   } else {
-    for (let v of Object.values(list)) {
-      if (typeof v !== "object") keys.add(v.toString());
-    }
+    unique_key_arr.push("value");
   }
-  let arr = [];
-  for (let k of keys) {
-    arr.push({ [k]: "" });
-  }
-  console.log(arr);
-  const handleDialogClose = () => {
-    setDialogValue(Object.assign({}, arr));
+  for (let val of unique_key_arr) keyObj[val] = "";
+  const [dialogValue, setDialogValue] = useState(keyObj);
 
+  const handleDialogClose = () => {
+    setDialogValue(keyObj);
     toggleDialogOpen(false);
   };
 
@@ -103,127 +123,138 @@ export const ListField = function ListField(props: any) {
     showPopoverCell(false);
     handleDialogClose();
   };
+  const onSubmitWrap = (e) => {
+    e.preventDefault();
+    let toAdd = {};
+    for (let [k, v] of Object.entries(dialogValue))
+      if (types[k] === "number") toAdd[k] = Number(v);
+      else toAdd[k] = v;
 
-  const [dialogValue, setDialogValue] = useState(Object.assign({}, arr));
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setValue(
-      Object.assign(
-        {},
-        arr.map((val) => {
-          return { [val.keys()[0]]: dialogValue[val.keys()[0]] };
-        })
-      )
-    );
-
-    handleDialogClose();
+    if (displayField) list.push(toAdd);
+    else list.push(toAdd.value);
+    setSelected({ [key]: toAdd });
+    onSubmit(list);
+    handleClose();
   };
-
-  // if (!showPopoverCell) return <></>;
-
+  console.log("display field");
+  console.log(displayField);
   return (
-    <div id="10">
+    <div id="auto-box">
       <Autocomplete
         value={value}
         open={acOpen}
         PopperComponent={PopperComponent}
-        onChange={(event, newValue: any) => {
-          if (typeof newValue === "string") {
-            // timeout to avoid instant validation of the dialog's form.
+        onChange={(event, newValue: any, reason) => {
+          console.log({ event });
+          if (reason === "createOption") {
+            // pressing 'enter' for new option
             setTimeout(() => {
               toggleDialogOpen(true);
-              setDialogValue(
-                Object.assign(
-                  {},
-                  arr.map((val) => {
-                    let currKey = val.keys()[0];
-                    if (val.keys()[0] === displayField)
-                      return { [currKey]: newValue };
-                    else return { [currKey]: "" };
-                  })
-                )
-                // title: newValue,
-              );
+              setDialogValue({ ...dialogValue, [key]: newValue.inputValue });
             });
-          } else if (newValue && newValue.inputValue) {
+          } else if (
+            reason === "selectOption" &&
+            newValue &&
+            newValue.inputValue
+          ) {
+            console.log("enter pressed");
+            // selecting `add new option`
             toggleDialogOpen(true);
-            setDialogValue(
-              Object.assign(
-                {},
-                arr.map((val) => {
-                  let currKey = val.keys()[0];
-                  if (currKey === displayField)
-                    return { [currKey]: newValue.inputValue };
-                  else return { [currKey]: "" };
-                })
-              )
-              // title: newValue.inputValue,
-            );
-          } else if (newValue) {
+            setDialogValue({ ...dialogValue, [key]: newValue.inputValue });
+          } else {
+            // else click/enter and close - no event
+            if (displayField) {
+              setSelected(newValue);
+            } else {
+              let sani = sanitiseValue(newValue);
+              setSelected({ [key]: sani });
+            }
             setValue(newValue);
-            setSelected(newValue);
             handleClose();
           }
         }}
         filterOptions={(options, params) => {
           const filtered = filter(options, params);
-
           if (params.inputValue !== "") {
             filtered.push({
               inputValue: params.inputValue,
-              [displayField]: `Add "${params.inputValue}"`,
+              [key]: `Add "${params.inputValue}"`,
             });
           }
 
           return filtered;
         }}
-        id="free-solo-dialog-demo"
+        id="autocomplete"
+        openOnFocus
         options={list}
         getOptionLabel={(option) => {
           // e.g value selected with enter, right from the input
+
           if (typeof option === "string") {
             return option;
           }
           if (option.inputValue) {
-            return option.inputValue;
+            return String(option.inputValue.toString());
           }
-          return option.name || "unknown";
+          return option[key]?.toString() || "";
         }}
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
-        renderOption={(props, option) => (
-          <li {...props}>{option[column.config.displayField]}</li>
-        )}
+        renderOption={(props, option) => {
+          const smallText =
+            typeof option === "object" &&
+            [...Object.entries(option as object)]
+              .filter(([k, v]) => k !== key)
+              .map(([k, v]) => `${k}: ${v}`)
+              .join(", ");
+          //console.log(`is this where the error is? (renderOption)`);
+          //console.log({key, option, smallText});
+          return (
+            <li {...props}>
+              <div>
+                {option[key] || option}
+                {smallText && (
+                  <>
+                    <br />
+                    <span className={css.smallTxt}>{smallText}</span>
+                  </>
+                )}
+              </div>
+            </li>
+          );
+        }}
         sx={{ width: 300 }}
         freeSolo
         renderInput={(params) =>
-          acOpen ? <TextField {...params} label="Select Item" /> : <></>
+          acOpen ? (
+            <TextField autoFocus {...params} label="Select Item" />
+          ) : (
+            <></>
+          )
         }
       />
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmitWrap}>
           <DialogTitle>Add a new cell</DialogTitle>
           <DialogContent>
-            <DialogContentText>Add content not found</DialogContentText>
+            <DialogContentText>Add content. Not found</DialogContentText>
 
-            {arr.map((val) => {
-              console.log(Object.keys(val)[0]);
-              let key = Object.keys(val)[0];
+            {unique_key_arr.map((val) => {
               return (
                 <TextField
                   autoFocus
                   margin="dense"
-                  id="name"
-                  value={dialogValue[key]}
+                  id={val}
+                  key={val}
+                  value={dialogValue[val]}
                   onChange={(event) =>
                     setDialogValue({
                       ...dialogValue,
-                      [key]: event.target.value,
+                      [val]: event.target.value,
                     })
                   }
-                  label={key}
+                  label={val}
                   type="text"
                   variant="standard"
                 />

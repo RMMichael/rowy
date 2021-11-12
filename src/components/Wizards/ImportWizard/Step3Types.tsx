@@ -40,6 +40,11 @@ export default function Step3Types({ config, updateConfig, isXs }: IStepProps) {
 
   const { tableState } = useProjectContext();
 
+  const onTypeClick = (e) => {
+    console.log("on focus");
+    console.log({ e });
+  };
+
   return (
     <div>
       <Grid container spacing={2} className={classes.typeSelectRow}>

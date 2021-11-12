@@ -55,7 +55,7 @@ export default function withPopoverCell(
 
     const { validationRegex, required } = (props.column as any).config;
 
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState(null);
 
     // Initially display BasicCell to improve scroll performance
     const [displayedComponent, setDisplayedComponent] = useState<
@@ -87,9 +87,7 @@ export default function withPopoverCell(
       name: props.column.name as string,
       type: (props.column as any).type as FieldType,
     };
-    console.log(
-      `column: ${props.column.name}, cell display:${displayedComponent}`
-    );
+
     if (displayedComponent === "basic")
       return (
         <ErrorBoundary fullScreen={false} basic wrap="nowrap">

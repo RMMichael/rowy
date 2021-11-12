@@ -43,7 +43,6 @@ const useStyles = makeStyles({
     },
   },
 });
-
 const Settings = (props) => {
   const { fieldName, config, handleChange } = props;
   const { tableState, roles } = useProjectContext();

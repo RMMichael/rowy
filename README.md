@@ -1,7 +1,7 @@
 ## Overview Rowy
 
 Rowy advertises as a platform that displays data from a firestore database. It
-allows for each column to be represented as around 30 different types including
+allows for each column to be represented as around 20 different types including
 datetime, rating, phone, images and email. They also have an open-ended feature
 which allows the user to insert their own code to interact with firebase. This
 feature uses cloud functions and CRUD listeners on the database and, when a

@@ -16,7 +16,7 @@ export default function LongText({ value }: IBasicCellProps) {
         lineHeight: theme.typography.body2.lineHeight,
       }}
     >
-      {value}
+      {String(value)}
     </div>
   );
 }

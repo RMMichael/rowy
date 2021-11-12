@@ -14,15 +14,18 @@ import { useProjectContext } from "contexts/ProjectContext";
 import { FieldType } from "constants/fields";
 import { SELECTABLE_TYPES } from "./utils";
 
+import ListSelect from "../../fields/List/ListSelect";
+
 const useStyles = makeStyles((theme) =>
   createStyles({
-    typeSelectRow: { marginBottom: theme.spacing(3) },
+    typeSelectRow: {
+      marginBottom: theme.spacing(3),
+    },
 
     buttonBase: {
       width: "100%",
       textAlign: "left",
     },
-
     typeHeading: { margin: theme.spacing(52 / 8, 0, 1) },
 
     previewDivider: { marginBottom: theme.spacing(2) },
@@ -31,18 +34,41 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function Step3Types({ config, updateConfig, isXs }: IStepProps) {
+export default function Step3Types({
+  config,
+  updateConfig,
+  isXs,
+  ...rest
+}: IStepProps) {
   const classes = useStyles();
-
   const [fieldToEdit, setFieldToEdit] = useState(Object.keys(config)[0]);
-
-  const handleChange = (v) => updateConfig({ [fieldToEdit]: { type: v } });
+  const [displayFields, setDisplayFields] = useState({});
+  const [selectedType, setSelectedType] = useState("");
 
   const { tableState } = useProjectContext();
 
-  const onTypeClick = (e) => {
-    console.log("on focus");
-    console.log({ e });
+  const handleChange = (v) => {
+    setSelectedType(v);
+    if (v === "LIST" && !displayFields[fieldToEdit]) {
+      let set = new Set();
+      console.log({ v });
+      let rows = tableState?.rows || [];
+      if (rows.length > 0 && typeof rows[0] === "object") {
+        for (let row of rows) {
+          let list = row[fieldToEdit] || [];
+          for (let val of list) {
+            if (val !== Object(val)) continue; // is not an object
+            for (let k of Object.keys(val)) set.add(k);
+          }
+        }
+      }
+      const keys = set.size > 0 ? ["", ...set] : ["No keys available"];
+      console.log("in handle");
+      console.log({ keys });
+      setDisplayFields({ ...displayFields, [fieldToEdit]: keys });
+    }
+    console.log({ v });
+    updateConfig({ [fieldToEdit]: { type: v } });
   };
 
   return (
@@ -92,6 +118,15 @@ export default function Step3Types({ config, updateConfig, isXs }: IStepProps) {
             hideLabel
             options={SELECTABLE_TYPES}
           />
+          {selectedType === "LIST" ? (
+            <ListSelect
+              options={displayFields[fieldToEdit]}
+              updateConfig={updateConfig}
+              fieldName={fieldToEdit}
+            />
+          ) : (
+            ""
+          )}
         </Grid>
       </Grid>
 
@@ -144,6 +179,10 @@ export default function Step3Types({ config, updateConfig, isXs }: IStepProps) {
             {!isXs && <Grid item className={classes.previewSpacer} />}
 
             <Grid item xs className={classes.cellContainer}>
+              {/*{ (selectedType === 'LIST')*/}
+              {/*    ?*/}
+              {/*    : */}
+              {/*}*/}
               <Cell
                 field={fieldToEdit}
                 value={row[fieldToEdit]}

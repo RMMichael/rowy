@@ -75,7 +75,6 @@ export default function Column({
   label,
   type,
   secondaryItem,
-
   active,
   ...props
 }: IColumnProps) {

@@ -88,6 +88,8 @@ export const ListField = function ListField(props: any) {
   const [acOpen, setAcOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null as any);
   let displayField = column.config.displayField;
+  console.log("DISPLAY FIELD");
+  console.log(displayField);
   let key = displayField ? displayField : "value";
 
   const css = Styles();
@@ -213,7 +215,7 @@ export const ListField = function ListField(props: any) {
           return (
             <li {...props}>
               <div>
-                {option[key] || option}
+                {option[key] || String(option)}
                 {smallText && (
                   <>
                     <br />

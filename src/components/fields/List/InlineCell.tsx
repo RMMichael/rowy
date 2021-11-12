@@ -7,17 +7,38 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ActionFab from "./ActionFab";
 // // import { sanitiseValue } from "./utils";
 import { makeStyles } from "@mui/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Styles = makeStyles({
   buttonDiv: {
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: "40px",
+    // flexFlow: "column wrap",
+    alignItems: "center",
+    marginLeft: "auto",
+    maxHeight: "calc(var(--row-height) - 10px))",
+    // gap: "5%",
+    flexFlow: "row wrap",
+    writingMode: "vertical-lr",
+    textOrientation: "upright",
+    justifyContent: "space-around",
   },
   selectDiv: {
     flexGrow: 1,
     overflow: "hidden",
+  },
+  pushList: {
+    marginLeft: "auto",
+  },
+  outerBox: {
+    padding: "var(--cell-padding)",
+    paddingRight: "0",
+    height: "100%",
+    font: "inherit",
+    color: "inherit !important",
+    letterSpacing: "inherit",
+    textAlign: "inherit",
+    display: "flex",
+    justifyContent: "flex-start",
   },
 });
 
@@ -58,36 +79,18 @@ export const InlineListField = forwardRef(function ListField(
     );
     console.log(display);
   } else display = <div>View {column.config.displayField || "Field"}</div>;
-
+  // let display = 'placeholder text';
   return (
     <Box
       ref={ref}
       disabled={disabled}
-      className="cell-collapse-padding"
-      style={{
-        padding: "var(--cell-padding)",
-        paddingRight: 0,
-        height: "100%",
-        font: "inherit",
-        color: "inherit !important",
-        letterSpacing: "inherit",
-        textAlign: "inherit",
-        display: "flex",
-        justifyContent: "flex-start",
-      }}
+      className={`cell-collapse-padding ${css.outerBox}`}
     >
-      <div style={{ flexGrow: 1, overflow: "hidden" }}>
+      <div className={css.selectDiv}>
         {/*{sanitiseValue(value)}*/}
         {display}
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: "40px",
-        }}
-      >
+      <div className={css.buttonDiv}>
         <ActionFab
           row={row}
           column={column}

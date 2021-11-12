@@ -11,9 +11,7 @@ import FieldSkeleton from "components/SideDrawer/Form/FieldSkeleton";
 import { useProjectContext } from "contexts/ProjectContext";
 
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
 import { makeStyles } from "@mui/styles";
 import { MenuProps } from "@material-ui/core/Menu";
 
